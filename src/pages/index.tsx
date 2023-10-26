@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { hasServiceWorker, hasRegistration } = useHasSpec();
+  const { hasServiceWorker, hasPushManager } = useHasSpec();
 
   return (
     <main>
       <h1>web push example</h1>
       <p>
-        has serviceWorker : {hasServiceWorker ? "✅" : "❌"}
+        has service worker? : {hasServiceWorker ? "✅" : "❌"}
       </p>
       <p>
-        has registration : {hasRegistration ? "✅" : "❌"}
+        has push manager? : {hasPushManager ? "✅" : "❌"}
       </p>
     </main>
   );
@@ -18,18 +18,19 @@ export default function Home() {
 
 function useHasSpec() {
   const [hasServiceWorker, setHasServiceWorker] = useState(false);
-  const [hasRegistration, setHasRegistration] = useState(false);
+  const [hasPushManager, setHasPushManager] = useState(false);
 
   useEffect(() => {
     setHasServiceWorker("serviceWorker" in navigator);
 
     async function setRegistration() {
-      const registration = await navigator.serviceWorker.getRegistration();
-      setHasRegistration(Boolean(registration));
+      const registration = await navigator.serviceWorker.ready;
+      
+      setHasPushManager(Boolean(registration));
     }
 
     setRegistration();
   }, []);
 
-  return { hasServiceWorker, hasRegistration };
+  return { hasServiceWorker, hasPushManager };
 }
