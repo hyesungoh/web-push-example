@@ -22,14 +22,7 @@ function useHasSpec() {
 
   useEffect(() => {
     setHasServiceWorker("serviceWorker" in navigator);
-
-    async function setRegistration() {
-      const registration = await navigator.serviceWorker.ready;
-      
-      setHasPushManager(Boolean(registration));
-    }
-
-    setRegistration();
+    setHasPushManager("PushManager" in window);
   }, []);
 
   return { hasServiceWorker, hasPushManager };
