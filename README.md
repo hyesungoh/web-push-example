@@ -1,2 +1,3 @@
 # web-push-example
-web push notification example for iOS 17
+
+web push notification example 

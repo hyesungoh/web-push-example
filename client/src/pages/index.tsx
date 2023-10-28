@@ -35,19 +35,6 @@ function useHasSpec() {
   return { hasServiceWorker, hasPushManager };
 }
 
-// const urlBase64ToUint8Array = (base64String: string) => {
-//   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-//   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-//   const rawData = window.atob(base64);
-//   const outputArray = new Uint8Array(rawData.length);
-
-//   for (let i = 0; i < rawData.length; ++i) {
-//     outputArray[i] = rawData.charCodeAt(i);
-//   }
-//   return outputArray;
-// };
-
 function useSubscribe() {
   async function getSubscription() {
     const register = await navigator.serviceWorker.register(
@@ -72,11 +59,16 @@ function useSubscribe() {
   async function sendRequest() {
     const subscription = await getSubscription();
 
-    const res = await axios.post("http://localhost:3001/subscribe", {
-      subscription,
-    });
+    const headers = { "Content-Type": "application/json" };
+    const res = await axios.post(
+      "http://localhost:3001/subscribe",
+      {
+        subscription,
+      },
+      { headers }
+    );
 
-    console.log(res);
+    console.log(res.data);
   }
 
   return {
